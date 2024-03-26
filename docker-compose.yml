@@ -1,0 +1,41 @@
+---
+version: "3.3"
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: php_app
+    volumes:
+      - ./:/var/www/html/
+    depends_on:
+      - db
+    ports:
+      - 8008:80
+  db:
+    container_name: mysqli
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./database/cms_db.sql:/docker-entrypoint-initdb.d/cms_db.sql
+      - persistent:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: sai
+      MYSQL_DATABASE: cms_db
+      MYSQL_USER: sai
+      MYSQL_PASSWORD: sai
+    ports:
+      - 6033:3306
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db:db
+    ports:
+      - 82:80
+    environment:
+      MYSQL_USER: sai
+      MYSQL_PASSWORD: sai
+      MYSQL_ROOT_PASSWORD: sai
+volumes:
+  persistent: null
