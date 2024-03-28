@@ -44,6 +44,7 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 script {
+		    echo "Loaded SSH credentials: ${SSH_KEY}"
                     sshagent(credentials: [SSH_KEY]) {
                         sh "scp -o StrictHostKeyChecking=no ${DOCKER_COMPOSE_FILE} ec2-user@${AWS_INSTANCE_IP}:~/"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose -f ~/docker-compose.yml pull'"
