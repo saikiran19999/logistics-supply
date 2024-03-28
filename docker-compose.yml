@@ -6,6 +6,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     container_name: php_app
+    image: php-app-web-web:latest
     volumes:
       - ./:/var/www/html/
     depends_on:
