@@ -3,6 +3,7 @@ pipeline {
 
 	environment {
         DOCKER_COMPOSE_FILE = "docker-compose.yml"
+        SSH_KEY = credentials('prod_ssh_key_id')
         AWS_INSTANCE_IP = '35.183.12.38'
         GIT_BRANCH = 'master' // Change this to your desired branch
     }
@@ -45,8 +46,8 @@ pipeline {
                 script {
                     sshagent(['prod_ssh_key_id']) {
                         sh "scp -o StrictHostKeyChecking=no ${DOCKER_COMPOSE_FILE} ec2-user@${AWS_INSTANCE_IP}:~/"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose -f ~/docker-compose.yml pull'"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose -f ~/docker-compose.yml up -d'"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose -f ${DOCKER_COMPOSE_FILE} pull'"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose -f ${DOCKER_COMPOSE_FILE} up -d'"
                     }
                 }
             }
