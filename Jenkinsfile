@@ -30,7 +30,6 @@ pipeline {
     stage('Build Docker Images') {
       steps {
         script {
-          sh "docker-compose build web"
           sh "docker-compose -f ${DOCKER_COMPOSE_FILE} build"
         }
       }
