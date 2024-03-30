@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_COMPOSE_FILE = "docker-compose.yml"
-        DOCKER_IMAGE_NAME = "your_docker_image_name"
+        DOCKER_IMAGE_NAME = "php-web-app"
         AWS_INSTANCE_IP = '15.156.93.84'
         GIT_BRANCH = 'master' // Change this to your desired branch
     }
