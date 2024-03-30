@@ -15,7 +15,7 @@ services:
       - 8008:80
   db:
     container_name: mysqli
-    image: mysql:local
+    image: mysql:latest
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     volumes:
