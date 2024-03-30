@@ -2,8 +2,8 @@ version: "3.3"
 services:
   web:
     build: 
-      context: ./database
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile-alternate
     container_name: php_app
     volumes:
       - ./:/var/www/html/
