@@ -40,6 +40,8 @@ pipeline {
         script {
           // Tagging and pushing the first image
           sh "docker tag php-web-app:latest saykerun1999/logistics-supply-chain:newimagev1"
+          sh "docker pull mysql:latest"
+          sh "docker pull phpmyadmin:latest"
 
           withCredentials([
             [$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']
