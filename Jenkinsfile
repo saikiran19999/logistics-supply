@@ -2,7 +2,6 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_IMAGE = "php_web_app"
     DOCKER_COMPOSE_FILE = "docker-compose.yml"
     SSH_KEY = credentials('prod_ssh_key_id')
     AWS_INSTANCE_IP = '15.156.93.84'
@@ -40,7 +39,7 @@ pipeline {
       steps {
         script {
           // Tagging and pushing the first image
-          sh "docker tag ${DOCKER_IMAGE} saykerun1999/logistics-supply-chain:newimagev1"
+          sh "docker tag php-web-app:latest saykerun1999/logistics-supply-chain:newimagev1"
 
           withCredentials([
             [$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']
