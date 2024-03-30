@@ -7,6 +7,9 @@ pipeline {
     AWS_INSTANCE_IP = '15.156.93.84'
     GIT_BRANCH = 'master' // Change this to your desired branch
     MYSQL_ROOT_PASSWORD = 'sai'
+    MYSQL_DATABASE = 'cms_db'
+    MYSQL_USER = 'sai'
+    MYSQL_PASSWORD = 'sai'
   }
 
   stages {
@@ -70,7 +73,7 @@ pipeline {
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev1'"
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev2'"
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev3'"
-            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 6033:3306 --name database -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} saykerun1999/logistics-supply-chain:newimagev2'"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 6033:3306 --name database -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} -e MYSQL_DATABASE=${MYSQL_DATABASE} -e MYSQL_USER=${MYSQL_USER} -e MYSQL_PASSWORD=${MYSQL_PASSWORD} saykerun1999/logistics-supply-chain:newimagev2'"
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 82:80 --name backend saykerun1999/logistics-supply-chain:newimagev3'"
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 8008:80 --name frontend -e BACKEND_URL=http://${AWS_INSTANCE_IP}:82 saykerun1999/logistics-supply-chain:newimagev1'"
           }
