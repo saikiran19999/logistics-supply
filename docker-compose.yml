@@ -3,7 +3,7 @@ services:
   web:
     build: 
       context: .
-      dockerfile: Dockerfile-alternate
+      dockerfile: Dockerfile
     container_name: php_app
     volumes:
       - ./:/var/www/html/
