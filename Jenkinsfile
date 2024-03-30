@@ -47,7 +47,7 @@ pipeline {
           ]) {
             sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
           }
-          sh 'docker push ${DOCKER_IMAGE} saykerun1999/logistics-supply-chain:newimagev1'
+          sh 'docker push saykerun1999/logistics-supply-chain:newimagev1'
 
           // Tagging and pushing the second image
           sh 'docker tag mysql:latest saykerun1999/logistics-supply-chain:newimagev2'
