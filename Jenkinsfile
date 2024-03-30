@@ -2,8 +2,9 @@ pipeline {
   agent any
 
   environment {
+    DOCKER_IMAGE = "php_web_app"
     DOCKER_COMPOSE_FILE = "docker-compose.yml"
-    DOCKER_IMAGE_NAME = "php-web-app"
+    SSH_KEY = credentials('prod_ssh_key_id')
     AWS_INSTANCE_IP = '15.156.93.84'
     GIT_BRANCH = 'master' // Change this to your desired branch
   }
@@ -35,15 +36,26 @@ pipeline {
       }
     }
 
-    stage('Push to Docker Hub') {
+    stage('Push Docker Images to Docker Hub') {
       steps {
         script {
-          withDockerRegistry(
-            credentialsId: "docker-hub-credentials",
-            url: 'https://index.docker.io/v1/'
-          ) {
-            sh "docker-compose -f ${DOCKER_COMPOSE_FILE} push"
+          // Tagging and pushing the first image
+          sh "docker tag ${DOCKER_IMAGE} saykerun1999/logistics-supply-chain:newimagev1"
+
+          withCredentials([
+            [$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']
+          ]) {
+            sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
           }
+          sh "docker push saykerun1999/logistics-supply-chain:newimagev1"
+
+          // Tagging and pushing the second image
+          sh "docker tag mysql:latest saykerun1999/logistics-supply-chain:newimagev2"
+          sh "docker push saykerun1999/logistics-supply-chain:newimagev2"
+
+          // Tagging and pushing the third image
+          sh "docker tag phpmyadmin:latest saykerun1999/logistics-supply-chain:newimagev3"
+          sh "docker push saykerun1999/logistics-supply-chain:newimagev3"
         }
       }
     }
