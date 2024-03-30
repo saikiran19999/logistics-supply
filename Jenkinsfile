@@ -38,14 +38,14 @@ pipeline {
       steps {
         script {
           // Tagging and pushing the first image
-          sh 'docker tag saykerun1999/logistics-supply-chain:newimagev1'
+          sh 'docker tag saykerun1999/logistics-supply-chain:newimagev1 saykerun1999/logistics-supply-chain:newimagev2'
 
           withCredentials([
             [$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']
           ]) {
             sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
           }
-          sh 'docker push saykerun1999/logistics-supply-chain:newimagev1'
+          sh 'docker push saykerun1999/logistics-supply-chain:newimagev2'
 
           // Tagging and pushing the second image
           sh 'docker tag mysql:latest saykerun1999/logistics-supply-chain:newimagev2'
