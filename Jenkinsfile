@@ -73,9 +73,9 @@ pipeline {
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev1'"
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev2'"
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev3'"
-            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 6033:3306 --name saykerun1999/logistics-supply-chain:newimagev2'"
-            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 82:80 --name saykerun1999/logistics-supply-chain:newimagev3'"
-            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 8008:80 --name saykerun1999/logistics-supply-chain:newimagev1 --depends-on saykerun1999/logistics-supply-chain:newimagev2'"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 6033:3306 --name database saykerun1999/logistics-supply-chain:newimagev2'"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 82:80 --name backend saykerun1999/logistics-supply-chain:newimagev3'"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 8008:80 --name frontend saykerun1999/logistics-supply-chain:newimagev1 --depends-on backend saykerun1999/logistics-supply-chain:newimagev2'"
           }
         }
       }
