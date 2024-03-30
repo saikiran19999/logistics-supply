@@ -38,7 +38,7 @@ pipeline {
       steps {
         script {
           // Tagging and pushing the first image
-          sh 'docker tag webjob-web:latest saykerun1999/logistics-supply-chain:newimagev1'
+          sh 'docker tag saykerun1999/logistics-supply-chain:newimagev1'
 
           withCredentials([
             [$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']
