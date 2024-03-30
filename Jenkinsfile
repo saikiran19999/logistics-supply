@@ -49,7 +49,7 @@ pipeline {
           sh "docker push saykerun1999/logistics-supply-chain:newimagev1"
 
           // Tagging and pushing the second image
-          sh "docker tag mysql:local saykerun1999/logistics-supply-chain:newimagev2"
+          sh "docker tag mysql:latest saykerun1999/logistics-supply-chain:newimagev2"
           sh "docker push saykerun1999/logistics-supply-chain:newimagev2"
 
           // Tagging and pushing the third image
