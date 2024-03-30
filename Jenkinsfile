@@ -1,15 +1,15 @@
 pipeline {
     agent any
 
-	environment {
+    environment {
         DOCKER_COMPOSE_FILE = "docker-compose.yml"
-        SSH_KEY = credentials('prod_ssh_key_id')
+        DOCKER_IMAGE_NAME = "your_docker_image_name"
         AWS_INSTANCE_IP = '15.156.93.84'
         GIT_BRANCH = 'master' // Change this to your desired branch
     }
 
     stages {
-		stage('Checkout') {
+        stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM',
                           branches: [[name: "*/$GIT_BRANCH"]],
@@ -20,26 +20,37 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} build"
+                    // Build Docker image using Dockerfile
+                    docker.build("${DOCKER_IMAGE_NAME}:latest", "-f Dockerfile .")
                 }
             }
         }
-		
-		stage('Push to Docker Hub') {
-                  steps {
-                      script {
-                          withDockerRegistry(
-                              credentialsId: "docker-hub-credentials",
-                              url: 'https://index.docker.io/v1/'
-                          ) {
-                              sh "docker-compose -f ${DOCKER_COMPOSE_FILE} push"
-                          }
-                      }
-                  }
-              }
+
+        stage('Update Docker Image in Docker Compose') {
+            steps {
+                script {
+                    // Update Docker image reference in Docker Compose file
+                    sh "sed -i 's|image:.*|image: ${DOCKER_IMAGE_NAME}:latest|' ${DOCKER_COMPOSE_FILE}"
+                }
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Push Docker image to Docker Hub
+                    withDockerRegistry(
+                        credentialsId: "docker-hub-credentials",
+                        url: 'https://index.docker.io/v1/'
+                    ) {
+                        sh "docker push ${DOCKER_IMAGE_NAME}:latest"
+                    }
+                }
+            }
+        }
 
         stage('Deploy to EC2') {
             steps {
