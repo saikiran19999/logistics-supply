@@ -44,7 +44,7 @@ pipeline {
                     // Push Docker image to Docker Hub
                     withDockerRegistry(
                         credentialsId: "docker-hub-credentials",
-                        url: 'https://hub.docker.com/repository/docker/saykerun1999/logistics-supply-chain'
+                        url: 'https://index.docker.io/v1/'
                     ) {
                         sh "docker push ${DOCKER_IMAGE_NAME}:latest"
                     }
