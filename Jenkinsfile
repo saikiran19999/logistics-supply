@@ -36,26 +36,27 @@ pipeline {
         }
       }
     }
+
     stage('Push Docker Images to Docker Hub') {
       steps {
         script {
           // Tagging and pushing the first image
-          sh 'docker tag ${DOCKER_IMAGE} saykerun1999/logistics-supply-chain:newimagev1'
+          sh "docker tag ${DOCKER_IMAGE} saykerun1999/logistics-supply-chain:newimagev1"
 
           withCredentials([
             [$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']
           ]) {
             sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
           }
-          sh 'docker push saykerun1999/logistics-supply-chain:newimagev1'
+          sh "docker push saykerun1999/logistics-supply-chain:newimagev1"
 
           // Tagging and pushing the second image
-          sh 'docker tag mysql:latest saykerun1999/logistics-supply-chain:newimagev2'
-          sh 'docker push saykerun1999/logistics-supply-chain:newimagev2'
+          sh "docker tag mysql:latest saykerun1999/logistics-supply-chain:newimagev2"
+          sh "docker push saykerun1999/logistics-supply-chain:newimagev2"
 
-          //tagging and pushing the 3rd image
-          sh 'docker tag phpmyadmin:latest saykerun1999/logistics-supply-chain:newimagev3'
-          sh 'docker push saykerun1999/logistics-supply-chain:newimagev2'
+          // Tagging and pushing the third image
+          sh "docker tag phpmyadmin:latest saykerun1999/logistics-supply-chain:newimagev3"
+          sh "docker push saykerun1999/logistics-supply-chain:newimagev3"
         }
       }
     }
