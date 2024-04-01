@@ -2,9 +2,7 @@
 FROM php:7.3.3-apache
 
 # Set the working directory
-#WORKDIR /var/www/html/
-
-WORKDIR /
+WORKDIR /var/www/html/
 
 # Copy the application code into the container
 COPY . .
