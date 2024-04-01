@@ -4,7 +4,7 @@ pipeline {
   environment {
     DOCKER_COMPOSE_FILE = "docker-compose.yml"
     SSH_KEY = credentials('prod_ssh_key_id')
-    AWS_INSTANCE_IP = '15.156.93.84'
+    AWS_INSTANCE_IP = '3.99.241.216'
     GIT_BRANCH = 'master' // Change this to your desired branch
     MYSQL_ROOT_PASSWORD = 'sai'
     MYSQL_DATABASE = 'cms_db'
