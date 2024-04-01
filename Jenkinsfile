@@ -64,16 +64,16 @@ pipeline {
                         sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                     }
                     sshagent(['prod_ssh_key_id']) {
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} sudo chmod -R 755 /var/www/html/"
+                        //sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} sudo chmod -R 755 /var/www/html/"
                         sh "scp -o StrictHostKeyChecking=no docker-compose.yml ec2-user@${AWS_INSTANCE_IP}:~/"
-                        sh "scp -o StrictHostKeyChecking=no -r * ec2-user@${AWS_INSTANCE_IP}:/tmp/"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'sudo mv /tmp/* /var/www/html/'"
+                        //sh "scp -o StrictHostKeyChecking=no -r * ec2-user@${AWS_INSTANCE_IP}:/tmp/"
+                        //sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'sudo mv /tmp/* /var/www/html/'"
                         //sh "scp -o StrictHostKeyChecking=no -r * ec2-user@${AWS_INSTANCE_IP}:/var/www/html/"
                         sh "scp -o StrictHostKeyChecking=no Dockerfile ec2-user@${AWS_INSTANCE_IP}:~/"
                         sh "scp -o StrictHostKeyChecking=no ./database/cms_db.sql ec2-user@${AWS_INSTANCE_IP}:~/"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose pull'"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose up -d'"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker exec mysqli mysql -uroot -psai cms_db < cms_db.sql' > import_log.txt"
+                        //sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker exec mysqli mysql -uroot -psai cms_db < cms_db.sql' > import_log.txt"
                     }
                 }
             }
