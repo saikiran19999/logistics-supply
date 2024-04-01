@@ -68,7 +68,8 @@ pipeline {
                         //sh "scp -o StrictHostKeyChecking=no -r ./ ec2-user@${AWS_INSTANCE_IP}:/var/www/html/"
                         sh "scp -o StrictHostKeyChecking=no Dockerfile ec2-user@${AWS_INSTANCE_IP}:~/"
                         sh "scp -o StrictHostKeyChecking=no ./database/cms_db.sql ec2-user@${AWS_INSTANCE_IP}:~/"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose pull'"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose build'"
+                        //sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose pull'"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose up -d'"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker exec mysqli mysql -uroot -psai cms_db < cms_db.sql' > import_log.txt"
                     }
