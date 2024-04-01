@@ -63,7 +63,6 @@ pipeline {
                     ]) {
                         sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                     }
-			sh "docker-compose -f ${DOCKER_COMPOSE_FILE} pull"
 			sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up"
                 }
             }
