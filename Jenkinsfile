@@ -65,7 +65,7 @@ pipeline {
                     }
                     sshagent(['prod_ssh_key_id']) {
                         sh "scp -o StrictHostKeyChecking=no docker-compose.yml ec2-user@${AWS_INSTANCE_IP}:~/"
-                        sh "scp -o StrictHostKeyChecking=no ./ ec2-user@${AWS_INSTANCE_IP}:/var/www/html/"
+                        sh "scp -o StrictHostKeyChecking=no -r * ec2-user@${AWS_INSTANCE_IP}:/var/www/html/"
                         sh "scp -o StrictHostKeyChecking=no Dockerfile ec2-user@${AWS_INSTANCE_IP}:~/"
                         sh "scp -o StrictHostKeyChecking=no ./database/cms_db.sql ec2-user@${AWS_INSTANCE_IP}:~/"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose pull'"
