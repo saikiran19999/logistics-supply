@@ -64,6 +64,7 @@ pipeline {
                         sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                     }
                     sshagent(['prod_ssh_key_id']) {
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} sudo chmod -R 755 /var/www/html/"
                         sh "scp -o StrictHostKeyChecking=no docker-compose.yml ec2-user@${AWS_INSTANCE_IP}:~/"
                         sh "scp -o StrictHostKeyChecking=no -r * ec2-user@${AWS_INSTANCE_IP}:/var/www/html/"
                         sh "scp -o StrictHostKeyChecking=no Dockerfile ec2-user@${AWS_INSTANCE_IP}:~/"
