@@ -68,6 +68,7 @@ pipeline {
                         sh "scp -o StrictHostKeyChecking=no Dockerfile ec2-user@${AWS_INSTANCE_IP}:~/"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose pull'"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker-compose up -d'"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker exec mysqli mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} < ./datbase/cms_db.sql'"
                     }
                 }
             }
