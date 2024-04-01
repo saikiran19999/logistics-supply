@@ -10,6 +10,7 @@ pipeline {
     MYSQL_DATABASE = 'cms_db'
     MYSQL_USER = 'sai'
     MYSQL_PASSWORD = 'sai'
+    DOCKER_NETWORK = 'php-network'
   }
 
   stages {
@@ -73,9 +74,9 @@ pipeline {
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev1'"
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev2'"
             sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:newimagev3'"
-            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 6033:3306 --name database -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} -e MYSQL_DATABASE=${MYSQL_DATABASE} -e MYSQL_USER=${MYSQL_USER} -e MYSQL_PASSWORD=${MYSQL_PASSWORD} saykerun1999/logistics-supply-chain:newimagev2'"
-            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 82:80 --name backend -e MYSQL_USER=${MYSQL_USER} -e MYSQL_PASSWORD=${MYSQL_PASSWORD} -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} saykerun1999/logistics-supply-chain:newimagev3'"
-            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 8008:80 --name frontend -e BACKEND_URL=http://${AWS_INSTANCE_IP}:82 saykerun1999/logistics-supply-chain:newimagev1'"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 6033:3306 --name database --network ${DOCKER_NETWORK} -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} -e MYSQL_DATABASE=${MYSQL_DATABASE} -e MYSQL_USER=${MYSQL_USER} -e MYSQL_PASSWORD=${MYSQL_PASSWORD} saykerun1999/logistics-supply-chain:newimagev2'"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 82:80 --name backend --network ${DOCKER_NETWORK} -e MYSQL_USER=${MYSQL_USER} -e MYSQL_PASSWORD=${MYSQL_PASSWORD} -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} saykerun1999/logistics-supply-chain:newimagev3'"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d -p 8008:80 --name frontend --network ${DOCKER_NETWORK} -e BACKEND_URL=http://${AWS_INSTANCE_IP}:6033 saykerun1999/logistics-supply-chain:newimagev1'"
           }
         }
       }
