@@ -1,6 +1,6 @@
 <?php
 
-$servername = "127.0.0.1";
+$servername = "localhost";
 $username = "sai";
 $password = "sai";
 $db = "cms_db";
