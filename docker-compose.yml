@@ -37,4 +37,4 @@ services:
       MYSQL_PASSWORD: sai
       MYSQL_ROOT_PASSWORD: sai
 volumes:
-  persistent: null
+  persistent:
