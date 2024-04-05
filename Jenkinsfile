@@ -66,6 +66,16 @@ pipeline {
 
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name mysql --network php-network -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_DATABASE=cms_db -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai -p 6033:3306 saykerun1999/logistics-supply-chain:mysql'"
 
+              def mysqlCommand = "mysql -h -u root -p root -e \"ALTER USER 'sai' IDENTIFIED WITH mysql_native_password BY 'sai';\""
+
+              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'mysqlCommand'"
+
+              sh "scp -o StrictHostKeyChecking=no ./database/cms_db.sql ec2-user@${AWS_INSTANCE_IP}:~/"
+
+              def mysqlImportCommand = "mysql -u root -p root cms_db < cms_db.sql"
+
+              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'mysqlImportCommand'"
+
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name phpmyadmin --network php-network -p 82:80 --link mysql:db -e PMA_HOST=db -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai saykerun1999/logistics-supply-chain:phpmyadmin'"
 
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name web_app --network php-network -p 8008:80 --link mysql:db -e PMA_HOST=db -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai saykerun1999/logistics-supply-chain:php-app-web-web'"
