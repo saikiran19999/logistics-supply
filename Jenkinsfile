@@ -66,8 +66,6 @@ pipeline {
 
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name mysql --network php-network -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_DATABASE=cms_db -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai -p 6033:3306 saykerun1999/logistics-supply-chain:mysql'"
 
-              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker exec mysql mysql -h mysql -u root -proot -e \"ALTER USER sai IDENTIFIED WITH mysql_native_password BY sai;\"'"
-
               sh "scp -o StrictHostKeyChecking=no ./database/cms_db.sql ec2-user@${AWS_INSTANCE_IP}:~/"
 
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'mysql -u root -p root cms_db < cms_db.sql'"
