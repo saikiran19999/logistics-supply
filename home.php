@@ -67,8 +67,7 @@ if($_SESSION['login_type'] != 1)
 	 <div class="col-12">
           <div class="card">
           	<div class="card-body">
-          		Welcome <?php echo $_SESSION['firstname']['lastname'] ?>!
-			echo <?php echo $conn->query("SELECT firstname | lastname FROM users where email = '".$email."'")->num_rows ?>!
+          		Welcome <?php echo $_SESSION['system']['name'] ?>!
           	</div>
           </div>
       </div>
