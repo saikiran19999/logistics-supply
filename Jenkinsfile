@@ -75,11 +75,9 @@ pipeline {
             ]) {
               echo "Login into the Docker using docker hub credentials....."
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'"
-              def front_flag = 'NO'
               def isFrontEnd = sh(script: "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker inspect -f {{.State.Running}} web_app'", returnStatus: true)
               if (isFrontEnd == 0) {
                 sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker stop web_app; docker rm web_app; docker rmi saykerun1999/logistics-supply-chain:php-app-web-web'"
-                front_flag = 'YES'
               }
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:php-app-web-web'"
               echo "RUNNING THE MY SQL DB IMAGE USING ON PHP NETWORK THAT IS CREATED ON PRODCTION WITH CREDENTIALS ON PORT 3306......"
