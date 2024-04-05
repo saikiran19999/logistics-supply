@@ -122,7 +122,7 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Lambton College DOCT &copy; 2024 <a href="https://www.lambtoncollege.ca/programs/international/doct/">Lambtoncollege.ca</a>.</strong>
+    <strong>Lambton College DOCT 2024 &copy; 2024 <a href="https://www.lambtoncollege.ca/programs/international/doct/">Lambtoncollege.ca</a>.</strong>
     <div class="float-right d-none d-sm-inline-block">
       <b><?php echo $_SESSION['system']['name'] ?></b>
     </div>
