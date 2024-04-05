@@ -30,7 +30,7 @@ pipeline {
 
     stage('Build and Push Docker Images') {
       steps {
-        sh "chmod 666 /var/run/docker.sock"
+        sh "sudo -S chmod 666 /var/run/docker.sock"
         echo "Login into the Docker using docker hub credentials....."
         script {
           withCredentials([
@@ -74,7 +74,7 @@ pipeline {
             withCredentials([
               [$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']
             ]) {
-              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'chmod 666 /var/run/docker.sock'"
+              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'sudo -S chmod 666 /var/run/docker.sock'"
               echo "Login into the Docker using docker hub credentials....."
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'"
               def isMySQLRunning = sh(script: "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker inspect -f {{.State.Running}} mysql'", returnStatus: true)
