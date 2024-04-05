@@ -75,7 +75,7 @@ pipeline {
               echo "Login into the Docker using docker hub credentials....."
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'"
               echo "Pulling the BACKEND DB MY SQL IMAGE......"
-              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker stop web_app; docker rm web_app; docker rmi saykerun1999/logistics-supply-chain:php-app-web-web'"
+              #sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker stop web_app; docker rm web_app; docker rmi saykerun1999/logistics-supply-chain:php-app-web-web'"
               def isMySQLRunning = sh(script: "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker inspect -f {{.State.Running}} mysql'", returnStatus: true)
               if (isMySQLRunning == 0) {
                 echo "NO NEED TO PULL THE MY SQL AND PHP MY ADMIN CONTAINERS......."
