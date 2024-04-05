@@ -61,7 +61,7 @@ Class Action {
 			}
 		}
 		if(!empty($password)){
-					$data .= ", password=md5('$password') ";
+					$data .= ", password='$password' ";
 
 		}
 		$check = $this->db->query("SELECT * FROM users where email ='$email' ".(!empty($id) ? " and id != {$id} " : ''))->num_rows;
@@ -87,7 +87,7 @@ Class Action {
 				if($k =='password'){
 					if(empty($v))
 						continue;
-					$v = md5($v);
+					$v = $v;
 
 				}
 				if(empty($data)){
@@ -134,7 +134,7 @@ Class Action {
 		foreach($_POST as $k => $v){
 			if(!in_array($k, array('id','cpass','table')) && !is_numeric($k)){
 				if($k =='password')
-					$v = md5($v);
+					$v = $v;
 				if(empty($data)){
 					$data .= " $k='$v' ";
 				}else{
