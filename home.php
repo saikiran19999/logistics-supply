@@ -67,7 +67,7 @@ if($_SESSION['login_type'] != 1)
 	 <div class="col-12">
           <div class="card">
           	<div class="card-body">
-          		Welcome to the <?php echo $_SESSION['login_name'] ?>!
+          		Welcome <?php echo $_SESSION['system']['name'] ?>!
           	</div>
           </div>
       </div>
