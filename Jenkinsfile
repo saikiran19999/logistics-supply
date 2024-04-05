@@ -75,15 +75,27 @@ pipeline {
               echo "Login into the Docker using docker hub credentials....."
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'"
               echo "Pulling the BACKEND DB MY SQL IMAGE......"
-              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:mysql'"
-              echo "Pulling the BACKEND PHP MY ADMIN IMAGE......"
-              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:phpmyadmin'"
-              echo "Pulling the FRONT END IMAGE......"
+              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker stop web_app; docker rm web_app; docker rmi saykerun1999/logistics-supply-chain:php-app-web-web'"
+              def isMySQLRunning = sh(script: "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker inspect -f {{.State.Running}} mysql'", returnStatus: true)
+              if (isMySQLRunning == 0) {
+                echo "NO NEED TO PULL THE MY SQL AND PHP MY ADMIN CONTAINERS......."
+              } else {
+                sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:mysql'"
+                echo "Pulling the BACKEND PHP MY ADMIN IMAGE......"
+                sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:phpmyadmin'"
+                echo "Pulling the FRONT END IMAGE......"
+              }
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:php-app-web-web'"
               echo "RUNNING THE MY SQL DB IMAGE USING ON PHP NETWORK THAT IS CREATED ON PRODCTION WITH CREDENTIALS ON PORT 3306......"
-              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name mysql --network php-network -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_DATABASE=cms_db -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai -p 6033:3306 saykerun1999/logistics-supply-chain:mysql'"
-              echo "RUNNING THE MY BACKEND PHP ADMIN IMAGE USING ON PHP NETWORK THAT IS CREATED ON PRODCTION WITH CREDENTIALS ON PORT 82......"
-              sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name phpmyadmin --network php-network -p 82:80 --link mysql:db -e PMA_HOST=db -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai saykerun1999/logistics-supply-chain:phpmyadmin'"
+
+              def isMySQLRunning = sh(script: "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker inspect -f {{.State.Running}} mysql'", returnStatus: true)
+              if (isMySQLRunning == 0) {
+                echo "NO NEED TO RUN THE MY SQL AND PHP MY ADMIN CONTAINERS......."
+              } else {
+                sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name mysql --network php-network -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_DATABASE=cms_db -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai -p 6033:3306 saykerun1999/logistics-supply-chain:mysql'"
+                echo "RUNNING THE MY BACKEND PHP ADMIN IMAGE USING ON PHP NETWORK THAT IS CREATED ON PRODCTION WITH CREDENTIALS ON PORT 82......"
+                sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name phpmyadmin --network php-network -p 82:80 --link mysql:db -e PMA_HOST=db -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai saykerun1999/logistics-supply-chain:phpmyadmin'"
+              }
               echo "RUNNING THE FRONT END IMAGE USING ON PHP NETWORK THAT IS CREATED ON PRODCTION WITH CREDENTIALS ON PORT 8008......"
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name web_app --network php-network -p 8008:80 --link mysql:db -e PMA_HOST=db -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai saykerun1999/logistics-supply-chain:php-app-web-web'"
             }
