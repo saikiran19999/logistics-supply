@@ -1,8 +1,8 @@
 <?php
 
 $servername = "db";
-$username = "sai";
-$password = "sai";
+$username = "root";
+$password = "root";
 $db = "cms_db";
 
 $conn = new mysqli($servername,$username,$password,$db);
