@@ -64,6 +64,10 @@ pipeline {
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:mysql'"
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:phpmyadmin'"
               sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker pull saykerun1999/logistics-supply-chain:php-app-web-web'"
+			  
+			  sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name mysql --network php-network -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_DATABASE=cms_db -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai -p 6033:3306 saykerun1999/logistics-supply-chain:mysql'"
+			  sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name phpmyadmin --network php-network -p 82:80 --link mysql:db -e PMA_HOST=db -e MYSQL_ROOT_PASSWORD=sai -e MYSQL_USER=sai -e MYSQL_PASSWORD=sai saykerun1999/logistics-supply-chain:phpmyadmin'"
+			  sh "ssh -o StrictHostKeyChecking=no ec2-user@${AWS_INSTANCE_IP} 'docker run -d --name web_app --network php-network -p 8008:80 --link mysql:db saykerun1999/logistics-supply-chain:php-app-web-web'"
             }
           }
         }
