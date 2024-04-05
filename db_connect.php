@@ -1,6 +1,6 @@
 <?php
 
-$servername = "db";
+$servername = "mysql";
 $username = "sai";
 $password = "sai";
 $db = "cms_db";
