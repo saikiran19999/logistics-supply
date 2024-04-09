@@ -67,7 +67,7 @@ if($_SESSION['login_type'] != 1)
 	 <div class="col-12">
           <div class="card">
           	<div class="card-body">
-          		Welcome to the MY logistics supply chain system <?php echo $_SESSION['login_name'] ?>!
+          		Welcome to the MY Transhub logistics supply chain system <?php echo $_SESSION['login_name'] ?>!
           	</div>
           </div>
       </div>
