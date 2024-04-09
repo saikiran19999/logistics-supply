@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     DOCKER_COMPOSE_FILE = "docker-compose.yml"
-    AWS_INSTANCE_IP = '15.223.119.204'
+    AWS_INSTANCE_IP = '15.223.119.204'  //prod
     GIT_REPO_URL = 'https://github.com/saikiran19999/logistics-supply.git'
   }
 
