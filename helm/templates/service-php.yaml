@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "my-chart.fullname" . }}-phpApp
+spec:
+  selector:
+    app: php-web
+  ports:
+    - protocol: TCP
+      port: 8008
+      targetPort: 80
+  type: NodePort
