@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: php-web-deployment
+  name: {{ include "my-chart.fullname" . }}-phpApp
 spec:
-  replicas: 1
+  replicas: {{ .Values.phpApp.replica }}
   selector:
     matchLabels:
       app: php-web
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: php-web
-        image: asif48/php_web:v6
+        image: {{ .Values.phpApp.image }}
         ports:
         - containerPort: 80
         volumeMounts:
