@@ -3,5 +3,5 @@ mysql:
   image: "mysql:latest"
 
 phpApp:
-  replica: "2"
+  replica: "3"
   image: "asif48/php_web:v6"
