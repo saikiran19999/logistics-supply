@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: php-web-service
+  name: {{ include "my-chart.fullname" . }}-phpApp
 spec:
   selector:
     app: php-web
