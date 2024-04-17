@@ -4,4 +4,4 @@ mysql:
 
 phpApp:
   replica: "2"
-  image: "asif48/php_web:v6"
+  image: "asif48/php_web"
