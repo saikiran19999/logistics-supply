@@ -1,1 +1,7 @@
+mysql:
+  replica: "1"
+  image: "mysql:latest"
 
+phpApp:
+  replica: "1"
+  image: "asif48/php_web:v6"
