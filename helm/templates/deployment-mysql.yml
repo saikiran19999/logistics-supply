@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: {{ include "my-chart.fullname" . }}-php-app
 spec:
-  replicas: 1
+  replicas: {{ .Values.phpApp.replica }}
   selector:
     matchLabels:
       app: mysql
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:latest
+        image: {{ .Values.phpApp.image }}
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: sai
